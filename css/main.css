@@ -1,0 +1,67 @@
+/* @import url('https://fonts.googleapis.com/css?family=Rakkas'); */
+/* @import url('https://fonts.googleapis.com/css?family=Open+Sans'); */
+/* @import url('https://fonts.googleapis.com/css?family=Dosis:700'); */
+/*@import url('https://fonts.googleapis.com/css?family=Signika:600');
+@import url('https://fonts.googleapis.com/css?family=Maven+Pro:500'); */
+/* @import url('https://fonts.googleapis.com/css?family=Rubik:500'); */
+/* @import url('https://fonts.googleapis.com/css?family=Monoton'); */
+@import url('https://fonts.googleapis.com/css?family=Baloo+Thambi+2');
+/* @import url('https://fonts.googleapis.com/css?family=Bellota'); */
+
+body {
+  font-family: 'Baloo+Thambi+2', sans-serif !important;
+    margin: 0;
+}
+
+#background_rect {
+    fill: rgb(200,200,200);
+}
+
+.tooltip.hidden {
+    pointer-events: none;
+}
+
+.box {
+    stroke:rgb(40,40,40);
+    stroke-width:1;
+}
+
+.box.current {
+    fill:rgb(20,200,20);
+}
+
+.box.past {
+    fill:rgb(40,40,40);
+}
+
+.box.past.unclicked {
+    cursor: pointer;
+    fill:rgba(40,40,40,0.6);
+}
+
+.box.future {
+    fill:rgb(200,200,200);
+}
+
+.box.future.stretch_year {
+    stroke:rgba(40,40,40,0.3);
+}
+
+.box:hover {
+    stroke: rgb(0,255,255);
+    stroke-width: 3;
+}
+
+.onclick-popup {
+    fill:rgb(40,40,40);
+}
+
+text.popup {
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill: rgb(255,255,255);
+}
+
+.popup.title {
+    font-size: 24px
+}
