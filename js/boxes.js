@@ -70,12 +70,12 @@ function draw_boxes() {
     // Group to position the boxes centrally on the page
     var boxes_holder = base.append('g')
                           .attr('id','boxes_holder')
-                          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+                          .attr('class', 'no-active-boxes');
 
     // Define the div for the tooltip
     tooltip = base.append("g")
-                        .attr("class", "tooltip hidden")
-                        .style("opacity", 0);
+                        .attr("class", "tooltip hidden");
     tooltip.append("rect")
             .attr("id","tooltip-bg")
             .attr("width",tdims.width)
@@ -176,19 +176,33 @@ function get_box_id(box) {
 }
 
 function get_translation(box) {
+    return 'translate(' + get_box_translation_h(box) + ', ' + get_box_translation_v(box) + ')';
+}
+
+function get_box_translation_h(box) {
     var week = box['week'];
     var year = box['year'];
     if (orientation_landscape) {
         // Then each column is a year, each row is a week
         h_offset = year * (boxDims.size + boxDims.margin);
-        v_offset = week * (boxDims.size + boxDims.margin);
     } else {
         // Then each column is a week, each row is a year
         h_offset = week * (boxDims.size + boxDims.margin);
+    }
+    return h_offset ;
+}
+
+function get_box_translation_v(box) {
+    var week = box['week'];
+    var year = box['year'];
+    if (orientation_landscape) {
+        // Then each column is a year, each row is a week
+        v_offset = week * (boxDims.size + boxDims.margin);
+    } else {
+        // Then each column is a week, each row is a year
         v_offset = year * (boxDims.size + boxDims.margin);
     }
-    // Compile into the correct string format to go into the translation
-    return 'translate(' + h_offset + ', ' + v_offset + ')';
+    return v_offset ;
 }
 
 function get_box_class(box) {
@@ -219,27 +233,60 @@ function get_box_stroke(box) {
     return 'rgb(40, 40, 40)';
 }
 
-function handleMouseover(d, i) {
-    tooltip.transition()
-        .duration(200)
-        .style("opacity", .9)
-        .attr("transform", "translate(" + (d3.event.pageX) + "," + (d3.event.pageY - (tdims.height + tdims.vertical_offset)) + ")");
+function show_tooltip(d) {
+    tooltip.attr("transform", "translate(" + (get_box_translation_h(d) + margin.left + boxDims.size) + "," + (get_box_translation_v(d) + margin.top - (tdims.height + tdims.vertical_offset)) + ")");
     tooltip.select("#tooltip-text-title")
         .text("Age: " + d.year + " Week #" + d.week);
     tooltip.select("#tooltip-text-month")
         .text(d.date.toLocaleDateString('en-GB',{'month':'short','year':'numeric'}));
+    remove_class(tooltip,'hidden') ;
+}
+
+function hide_tooltip(d) {
+    add_class(tooltip, 'hidden') ;
+}
+
+function handleMouseover(d, i) {
+    if (!box_is_active) {
+        // Only turn the tooltip on if another box isn't active
+        show_tooltip(d) ;
+    }
 }
 
 function handleMouseout(d, i) {
-    tooltip.transition()
-        .duration(200)
-        .style("opacity", 0);
+    if (!box_is_active) {
+        // Only turn the tooltip off if the box isn't active
+        hide_tooltip(d) ;
+    }
 }
 
 function handleClick(d, i) {
-    if (d.unclicked && d.date < new Date()){
-        console.log(d.date + " box clicked, it's previously unclicked, and it's in the past!");
+    var boxes_holder = d3.select('#boxes_holder');
+    if (box_is_active) {
+        // Then a box has been clicked when another was previously active 
+        // Remove the 'box-active' class from the wrapper
+        remove_class(boxes_holder, 'box-active') ;
+        add_class(boxes_holder, 'no-active-boxes') ;
+        // Remove the 'active' class from the box itself
+        var active_box = d3.select('.box.active')
+        remove_class(active_box, 'active') ;
     } else {
-        console.log(d.date + " box clicked, but not of interest...");
+        // A box has been clicked when one wasn't active before
+        // Regardless of which box is clicked, set it active (and fade the others). Keep the tooltip visible
+        add_class(boxes_holder, 'box-active') ;
+        remove_class(boxes_holder, 'no-active-boxes') ;
+        // Add the 'active' class from the box itself
+        var active_box = d3.select(this)
+        add_class(active_box, 'active') ;
+
+        if (d.unclicked && d.date < new Date()){
+            console.log(d.date + " box clicked, it's previously unclicked, and it's in the past!");
+        } else {
+            console.log(d.date + " box clicked, but not of interest...");
+        }
     }
+    // Make sure the tooltip is on/visible (catches case when clicking on a box to get out of 'active' status of another box, if mouseover remains on that box then tooltip would never be shown. Calling this here ensures it's positioned correctly)
+    show_tooltip(d);
+    // Update the status of whether a box is active or not (just flip the value)
+    box_is_active = !box_is_active;
 }

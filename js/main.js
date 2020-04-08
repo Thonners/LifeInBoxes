@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function() {
   dob = new Date(1800,0,1,12,0,0);
   // Sign-up date
   sud = new Date(2020,0,1,12,0,0);
+  // Whether a box is active or not
+  box_is_active = false ;
 
   console.log('Your document is ready!');
 

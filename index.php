@@ -26,6 +26,7 @@
     </div>
 
     <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script type="text/javascript" src='js/helpers.js'></script>
     <script type="text/javascript" src='js/boxes.js'></script>
     <script type="text/javascript" src='js/surroundings.js'></script>
     <script type="text/javascript" src='js/main.js'></script>

@@ -9,7 +9,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Bellota'); */
 
 body {
-  font-family: 'Baloo+Thambi+2', sans-serif !important;
+    font-family: 'Baloo+Thambi+2', sans-serif !important;
     margin: 0;
 }
 
@@ -17,8 +17,22 @@ body {
     fill: rgb(200,200,200);
 }
 
+.tooltip {
+    transition: 0.2s opacity ease-out, transform 0.2s ease-out;
+    opacity: 0.9;
+}
+
 .tooltip.hidden {
+    transition: opacity 0.2s ease-in, transform 0.5s ease-in;
     pointer-events: none;
+    opacity: 0.0 ;
+}
+
+.box-active .box {
+    opacity: 0.5;
+}
+.box-active .box.active {
+    opacity: 1.0;
 }
 
 .box {
@@ -32,10 +46,10 @@ body {
 
 .box.past {
     fill:rgb(40,40,40);
+    cursor: pointer;
 }
 
 .box.past.unclicked {
-    cursor: pointer;
     fill:rgba(40,40,40,0.6);
 }
 
@@ -47,7 +61,7 @@ body {
     stroke:rgba(40,40,40,0.3);
 }
 
-.box:hover {
+.no-active-boxes .box:hover, .box.active {
     stroke: rgb(0,255,255);
     stroke-width: 3;
 }
