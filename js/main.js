@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
 
+
+  now = new Date();
   // // Life expectancy
   // max_age = 80
   // extra_age = 20
@@ -21,13 +23,15 @@ document.addEventListener("DOMContentLoaded", function() {
   get_weeks();
 
   draw();
+
+  processSituation();
 });
 
 function draw() {
     init_dimensions();
     draw_title() ;
     draw_boxes() ;
-    draw_popup() ;
+    draw_popups() ;
 }
 
 
@@ -57,7 +61,6 @@ function get_weeks() {
   max_age_date.setFullYear(dob.getFullYear() + max_age);
   var dobDate = dob.getDate() ;
   var dobMonth = dob.getMonth() ;
-  var now = new Date();
   var lastWeek = new Date();
   lastWeek.setDate(lastWeek.getDate() - 7);
 
@@ -78,4 +81,18 @@ function get_weeks() {
         boxes.push(box);
     }
   }
+}
+
+function processSituation() {
+  // Check whether another week has passed since last time
+  var unclicked_boxes = boxes.filter(function(b) { return b.unclicked && b.date < now ;}) ;
+  if (unclicked_boxes.length > 0) {
+    show_week_passed_popup();
+  }
+}
+
+function show_week_passed_popup() {
+  var popup = d3.select('#week-passed-popup-group') ;
+  setTimeout(function() {remove_class(popup, 'hidden')}, 0);
+  setTimeout(function() {add_class(popup, 'hidden')}, 4000);
 }

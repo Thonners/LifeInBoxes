@@ -19,13 +19,14 @@ function draw_title() {
                 .attr("dominant-baseline","hanging");
 }
 
-function draw_popup() {
+function draw_popups() {
     console.log();
 
     var base = d3.select('#boxes_svg');
 
     var popupGroup = base.append("g")
-                            .attr("id","popup-group")
+                            .attr("id","week-passed-popup-group")
+                            .attr("class","popup hidden")
                             .attr("transform","translate(" + pdims.margin.left + "," + pdims.margin.top + ")");
     // Background
     popupGroup.append("rect")
@@ -37,7 +38,14 @@ function draw_popup() {
                 .attr("y",-pdims.height/2);
     // Title text
     popupGroup.append("text")
-                .text("Another week has passed...")
-                .attr("class","popup title")
+                .attr("id","week-passed-popup-title")
+                .text("Another week has passed!")
+                .attr("class","text title");
+    // Title text
+    popupGroup.append("text")
+                .attr("id","week-passed-popup-text-1")
+                .text("Click on its box to acknowledge its passing...")
+                .attr("class","text")
+                .attr("y", "2rem")
 
 }

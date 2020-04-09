@@ -21,9 +21,14 @@ body {
     transition: 0.2s opacity ease-out, transform 0.2s ease-out;
     opacity: 0.9;
 }
+.popup {
+    transition: 1s opacity ease-out, transform 0.2s ease-out;
+    opacity: 1.0;
+}
 
-.tooltip.hidden {
-    transition: opacity 0.2s ease-in, transform 0.5s ease-in;
+.hidden {
+    /* transition: opacity 0.2s ease-in, transform 0.5s ease-in; */
+    transition-timing-function: ease-in;
     pointer-events: none;
     opacity: 0.0 ;
 }
@@ -70,12 +75,12 @@ body {
     fill:rgb(40,40,40);
 }
 
-text.popup {
+.popup text{
     dominant-baseline: central;
     text-anchor: middle;
     fill: rgb(255,255,255);
 }
 
-.popup.title {
+.popup .title {
     font-size: 24px
 }
